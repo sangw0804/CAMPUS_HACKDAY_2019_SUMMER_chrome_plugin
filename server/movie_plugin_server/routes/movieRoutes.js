@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
     );
 
     console.log(data.items);
-    res.send(data.items);
+    res.status(200).send(data.items);
   } catch (e) {
     console.log(e);
   }

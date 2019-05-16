@@ -8,17 +8,18 @@ const app = express();
 
 // import Routes
 const movieRoutes = require('./routes/movieRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // connect to db
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors({ origin: true }));
-
+app.use(cors());
 
 // Routes
 app.use('/movies', movieRoutes);
+app.use('/', userRoutes);
 
 // test Routes
 app.get('/', async (req, res) => {

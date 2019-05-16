@@ -9,13 +9,15 @@ router.post('/login', async (req, res) => {
   try {
     const { token } = req.body;
 
-    const foundUser = await User.findById(token);
+    let foundUser = await User.findById(token);
     if (!foundUser) {
-      foundUser = await User.signUp();
+      foundUser = await User.signUp(token);
     }
 
-    res.send({user: foundUser});
+    res.status(200).send({user: foundUser});
   } catch (e) {
     console.log(e);
   }
 })
+
+module.exports = router;
