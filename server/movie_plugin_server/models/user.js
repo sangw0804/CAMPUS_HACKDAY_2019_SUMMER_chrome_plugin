@@ -17,8 +17,22 @@ const userSchema = new mongoose.Schema(
         type: String
       }
     ]
+  }, {
+    _id: false
   }
 );
+
+User.statics.signUp = async function (token) {
+  try {
+    const User = this;
+
+    return User.create({
+      _id: token
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
+}
 
 const User = mongoose.model('User', userSchema);
 
