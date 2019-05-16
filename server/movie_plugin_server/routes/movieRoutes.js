@@ -8,7 +8,7 @@ const { findOptimalMovie, testApiData } = require('./helpers');
 
 router.post('/', async (req, res) => {
   try {
-    const { q } = req.body;
+    const { q, token } = req.body;
     
     let data;
     if (process.env.NODE_ENV === 'test') {
@@ -31,7 +31,14 @@ router.post('/', async (req, res) => {
     const movies = findOptimalMovie(data.items);
 
     console.log(movies);
-    res.status(200).send(movies);
+    const movie = {...movies[0], movie_id: movies[0].link.split('=')[1]};
+
+    if (token) {
+      const foundUser = await User.findById(token);
+      await foundUser.addHistory(movie.movie_id);
+    }
+
+    res.status(200).send(movie);
   } catch (e) {
     console.log(e);
   }
