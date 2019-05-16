@@ -35,6 +35,8 @@ router.post('/', async (req, res) => {
 
     if (token) {
       const foundUser = await User.findById(token);
+      if (!foundUser) throw new Error('해당 token에 맞는 유저가 존재하지 않습니다!');
+
       await foundUser.addHistory(movie.movie_id);
     }
 

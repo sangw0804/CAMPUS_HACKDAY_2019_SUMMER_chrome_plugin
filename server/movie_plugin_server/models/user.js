@@ -44,7 +44,7 @@ userSchema.statics.signUp = async function (token) {
 userSchema.methods.addHistory = async function (movie_id) {
   const user = this;
 
-  user._histories.push({movie_id, created_at: new Date().getTime()});
+  user._histories.unshift({movie_id, created_at: new Date().getTime()});
   await user.save();
 }
 
