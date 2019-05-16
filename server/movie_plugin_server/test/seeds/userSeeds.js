@@ -4,7 +4,7 @@ const { User } = require('../../models/user');
 const users = [
   {
     _id: '123456',
-    _likes: [],
+    _likes: ['20482'],
     _histories: []
   }
 ];

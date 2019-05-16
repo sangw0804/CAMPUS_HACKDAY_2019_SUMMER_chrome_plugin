@@ -9,6 +9,7 @@ const app = express();
 // import Routes
 const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require('./routes/userRoutes');
+const likeRoutes = require('./routes/likeRoutes');
 
 // connect to db
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true });
@@ -19,6 +20,7 @@ app.use(cors());
 
 // Routes
 app.use('/movies', movieRoutes);
+app.use('/users/:user_id/likes', likeRoutes);
 app.use('/', userRoutes);
 
 // test Routes
