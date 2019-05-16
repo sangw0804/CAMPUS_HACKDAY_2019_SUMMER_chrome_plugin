@@ -1,9 +1,27 @@
+const config = require('../../config');
+
 const findOptimalMovie = movies => {
   return movies.filter(m => {
     const { title } = m;
 
     return title.indexOf('<b>') > -1 && title.split(/<\/?b>/).filter(temp => temp.length).length === 1;
   });
+}
+
+const movieApiReq = async q => {
+  const { data } = await axios(
+    `https://openapi.naver.com/v1/search/movie.json?query=${encodeURI(
+      q
+    )}`,
+    {
+      headers: {
+        'X-Naver-Client-Id': config.NAVER_API.CLIENT_ID,
+        'X-Naver-Client-Secret': config.NAVER_API.CLIENT_SECRET
+      }
+    }
+  );
+
+  return data;
 }
 
 const testApiData = {items: [
@@ -33,4 +51,4 @@ const testApiData = {items: [
   userRating: '8.88' }
 ]}
 
-module.exports = { findOptimalMovie, testApiData };
+module.exports = { findOptimalMovie, testApiData, movieApiReq };
