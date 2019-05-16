@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema(
   {
     _id: {
-      // firebase auth 에서 사용하는 uid
+      // token
       type: String,
       required: true
     },
