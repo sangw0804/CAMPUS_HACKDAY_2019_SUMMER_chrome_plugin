@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
     res.status(200).send({movies: foundUser._likes});
   } catch (e) {
     console.log(e);
+    res.status(500).send(e);
   }
 });
 
@@ -31,6 +32,7 @@ router.post('/', async (req, res) => {
     res.status(200).send({user: foundUser});
   } catch (e) {
     console.log(e);
+    res.status(500).send(e);
   }
 });
 
@@ -46,6 +48,7 @@ router.delete('/:movie_id', async (req, res) => {
     res.status(200).send({user: foundUser});
   } catch (e) {
     console.log(e);
+    res.status(500).send(e);
   }
 });
 

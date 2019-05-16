@@ -1,11 +1,15 @@
 const { User } = require('../../models/user');
+const { ObjectID } = require('mongodb');
 
 // User
 const users = [
   {
     _id: '123456',
     _likes: ['20482'],
-    _histories: []
+    _histories: [{
+      _id: new ObjectID(),
+      movie_id: '99999',
+    }]
   }
 ];
 

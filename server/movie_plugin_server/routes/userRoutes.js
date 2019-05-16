@@ -17,6 +17,7 @@ router.post('/login', async (req, res) => {
     res.status(200).send({user: foundUser});
   } catch (e) {
     console.log(e);
+    res.status(500).send(e);
   }
 })
 
