@@ -34,4 +34,19 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.delete('/:movie_id', async (req, res) => {
+  try {
+    const { user_id, movie_id } = req.params;
+
+    const foundUser = await User.findById(user_id);
+    if (!foundUser) throw new Error('user not found!');
+
+    await foundUser.dislikes(movie_id);
+
+    res.status(200).send({user: foundUser});
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 module.exports = router;
