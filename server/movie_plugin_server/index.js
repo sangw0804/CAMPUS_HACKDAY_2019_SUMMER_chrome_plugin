@@ -6,6 +6,14 @@ const app = express();
 
 app.use(cors({ origin: true }));
 
+app.get('/', async (req, res) => {
+  try {
+    res.send('hi');
+  } catch (e) {
+    console.log(e);
+  }
+})
+
 app.post('/movies', async (req, res) => {
   try {
     const { q } = req.body;
