@@ -48,6 +48,13 @@ userSchema.methods.addHistory = async function (movie_id) {
   await user.save();
 }
 
+userSchema.methods.removeHistory = async function (movie_id) {
+  const user = this;
+
+  user._histories = user._histories.filter(history => history.movie_id !== movie_id);
+  await user.save();
+}
+
 userSchema.methods.likes = async function (movie_id) {
   const user = this;
 

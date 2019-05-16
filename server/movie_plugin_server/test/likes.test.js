@@ -20,7 +20,7 @@ describe('Like', () => {
     });
   });
 
-  describe('POST /users/:user_id/likes/:movie_id', () => {
+  describe('POST /users/:user_id/likes', () => {
     it('should save likes to specific user', done => {
       const data =  {movie_id: '34524'};
 

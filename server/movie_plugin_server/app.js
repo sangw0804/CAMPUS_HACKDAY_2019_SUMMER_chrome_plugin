@@ -10,6 +10,7 @@ const app = express();
 const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require('./routes/userRoutes');
 const likeRoutes = require('./routes/likeRoutes');
+const historyRoutes = require('./routes/historyRoutes');
 
 // connect to db
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true });
@@ -21,6 +22,7 @@ app.use(cors());
 // Routes
 app.use('/movies', movieRoutes);
 app.use('/users/:user_id/likes', likeRoutes);
+app.use('/users/:user_id/histories', historyRoutes);
 app.use('/', userRoutes);
 
 // test Routes

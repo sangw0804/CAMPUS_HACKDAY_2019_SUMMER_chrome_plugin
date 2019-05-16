@@ -9,6 +9,7 @@ const users = [
     _histories: [{
       _id: new ObjectID(),
       movie_id: '99999',
+      created_at: new Date().getTime()
     }]
   }
 ];

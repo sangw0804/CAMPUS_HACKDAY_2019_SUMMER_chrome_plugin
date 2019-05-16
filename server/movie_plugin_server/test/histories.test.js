@@ -20,40 +20,17 @@ describe('History', () => {
     });
   });
 
-  describe('POST /users/:user_id/likes/:movie_id', () => {
-    it('should save likes to specific user', done => {
-      const data =  {movie_id: '34524'};
-
-      request(app)
-        .post(`/users/${users[0]._id}/likes`)
-        .send(data)
-        .expect(200)
-        .end(async (err, res) => {
-          try {
-            if (err) throw new Error(err);
-
-            const foundUser = await User.findById(users[0]._id);
-            expect(foundUser._likes[1]).toBe(data.movie_id);
-
-            done();
-          } catch (e) {
-            done(e);
-          }
-        });
-    });
-  });
-
-  describe('DELETE /users/:user_id/likes/:movie_id', () => {
+  describe('DELETE /users/:user_id/histories/:movie_id', () => {
     it('should delete like from specific user', done => {
       request(app)
-        .delete(`/users/${users[0]._id}/likes/${users[0]._likes[0]}`)
+        .delete(`/users/${users[0]._id}/histories/${users[0]._histories[0].movie_id}`)
         .expect(200)
         .end(async (err, res) => {
           try {
             if (err) throw new Error(err);
 
             const foundUser = await User.findById(users[0]._id);
-            expect(foundUser._likes.length).toBe(0);
+            expect(foundUser._histories.length).toBe(0);
 
             done();
           } catch (e) {
