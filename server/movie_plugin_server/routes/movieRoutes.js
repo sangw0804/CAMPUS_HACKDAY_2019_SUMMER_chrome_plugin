@@ -10,15 +10,16 @@ router.post('/', async (req, res) => {
   try {
     const { q } = req.body;
     
+    let data;
     if (process.env.NODE_ENV === 'test') {
       // jest 테스트시 외부 api 호출이 cors 이슈 발생하여 임시로 이렇게 처리합니다.
-      const data = {items: [
+       data = {items: [
         { title: '<b>괴물</b>' },
         { title: 'monster' },
         { title: '호수 <b>괴물</b>' }
       ]};
     } else {
-      const { data } = await axios(
+      data = (await axios(
         `https://openapi.naver.com/v1/search/movie.json?query=${encodeURI(
           q
         )}`,
@@ -28,7 +29,7 @@ router.post('/', async (req, res) => {
             'X-Naver-Client-Secret': config.NAVER_API.CLIENT_SECRET
           }
         }
-      );
+      )).data;
     }
 
     const movies = findOptimalMovie(data.items);
