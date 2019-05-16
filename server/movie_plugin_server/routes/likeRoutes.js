@@ -18,4 +18,20 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/', async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const { movie_id } = req.body;
+
+    const foundUser = await User.findById(user_id);
+    if (!foundUser) throw new Error('user not found!');
+
+    await foundUser.likes(movie_id);
+
+    res.status(200).send({user: foundUser});
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 module.exports = router;

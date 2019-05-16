@@ -48,6 +48,13 @@ userSchema.methods.addHistory = async function (movie_id) {
   await user.save();
 }
 
+userSchema.methods.likes = async function (movie_id) {
+  const user = this;
+
+  user._likes.push(movie_id);
+  await user.save();
+}
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = { User };
