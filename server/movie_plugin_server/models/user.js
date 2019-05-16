@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-User.statics.signUp = async function (token) {
+userSchema.statics.signUp = async function (token) {
   try {
     const User = this;
 
