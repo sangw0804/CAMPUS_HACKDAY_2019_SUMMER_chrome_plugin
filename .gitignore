@@ -23,3 +23,6 @@ yarn-error.log*
 
 # server config
 /server/movie_plugin_server/config
+
+# server dependencies
+/server/movie_plugin_server/node_modules
