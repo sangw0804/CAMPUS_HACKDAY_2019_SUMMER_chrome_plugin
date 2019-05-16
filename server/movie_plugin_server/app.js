@@ -29,7 +29,4 @@ app.get('/', async (req, res) => {
   }
 })
 
-// listening
-app.listen(9000, () => {
-  console.log('http listening to port : 9000');
-});
+module.exports = { app };
