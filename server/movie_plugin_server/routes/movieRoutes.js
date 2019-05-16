@@ -4,7 +4,7 @@ const axios = require('axios');
 const config = require('../config');
 const router = express.Router();
 const { User } = require('../models/user');
-const { findOptimalMovie } = require('./helpers');
+const { findOptimalMovie, testApiData } = require('./helpers');
 
 router.post('/', async (req, res) => {
   try {
@@ -13,11 +13,7 @@ router.post('/', async (req, res) => {
     let data;
     if (process.env.NODE_ENV === 'test') {
       // jest 테스트시 외부 api 호출이 cors 이슈 발생하여 임시로 이렇게 처리합니다.
-       data = {items: [
-        { title: '<b>괴물</b>' },
-        { title: 'monster' },
-        { title: '호수 <b>괴물</b>' }
-      ]};
+      data = testApiData;
     } else {
       data = (await axios(
         `https://openapi.naver.com/v1/search/movie.json?query=${encodeURI(

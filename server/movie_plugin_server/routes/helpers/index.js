@@ -6,4 +6,10 @@ const findOptimalMovie = movies => {
   });
 }
 
-module.exports = { findOptimalMovie };
+const testApiData = {items: [
+  { title: '<b>괴물</b>' },
+  { title: 'monster' },
+  { title: '호수 <b>괴물</b>' }
+]}
+
+module.exports = { findOptimalMovie, testApiData };

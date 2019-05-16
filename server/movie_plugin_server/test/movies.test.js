@@ -17,7 +17,6 @@ describe('Movie', () => {
           expect(res.body[0]).toHaveProperty('title');
         })
         .end(done);
-      done();
     });
   });
 });
