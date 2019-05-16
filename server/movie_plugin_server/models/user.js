@@ -1,0 +1,25 @@
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema(
+  {
+    _id: {
+      // firebase auth 에서 사용하는 uid
+      type: String,
+      required: true
+    },
+    _histories: [
+      {
+        type: String
+      }
+    ],
+    _likes: [
+      {
+        type: String
+      }
+    ]
+  }
+);
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = { User };
