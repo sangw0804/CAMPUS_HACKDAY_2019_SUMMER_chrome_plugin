@@ -1,10 +1,15 @@
 const express = require('express');
 const axios = require('axios');
+const redis = require("redis");
 
 const config = require('../config');
 const router = express.Router();
 const { User } = require('../models/user');
-const { findOptimalMovie, testApiData, movieApiReq } = require('./helpers');
+const { findOptimalMovie, testApiData, movieApiReq, trimMovie } = require('./helpers');
+const client = require('./helpers/redisClient')();
+const { promisify } = require('util');
+
+const hmsetAsync = promisify(client.hmset).bind(client);
 
 router.post('/', async (req, res) => {
   try {
@@ -19,8 +24,6 @@ router.post('/', async (req, res) => {
     }
 
     const movies = findOptimalMovie(data.items);
-
-    console.log(movies);
     const movie = {...movies[0], movie_id: movies[0].link.split('=')[1]};
 
     if (token) {
@@ -28,6 +31,9 @@ router.post('/', async (req, res) => {
       if (!foundUser) throw new Error('해당 token에 맞는 유저가 존재하지 않습니다!');
 
       await foundUser.addHistory(movie.movie_id);
+      if (client.exists(movie.movie_id) === 0) {
+        await hmsetAsync(movie.movie_id, trimMovie(movie));
+      }
     }
 
     res.status(200).send(movie);

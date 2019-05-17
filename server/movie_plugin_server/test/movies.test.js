@@ -3,9 +3,10 @@ const request = require('supertest');
 
 const { app } = require('../app');
 const { User } = require('../models/user');
-const { users, populateUsers } = require('./seeds/userSeeds');
+const { users, populateUsers, client } = require('./seeds/userSeeds');
 
 beforeEach(populateUsers);
+afterAll(() => client.quit());
 
 describe('Movie', () => {
   describe('post /movies', () => {

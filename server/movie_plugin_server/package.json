@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles test/*.test.js"
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit test/*.test.js"
   },
   "author": "oh sangwoo",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "express": "^4.16.4",
     "jest": "^24.8.0",
     "mongoose": "^5.5.8",
+    "redis": "^2.8.0",
     "supertest": "^4.0.2"
   }
 }

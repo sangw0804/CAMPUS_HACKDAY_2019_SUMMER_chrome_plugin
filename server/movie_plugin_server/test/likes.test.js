@@ -3,9 +3,10 @@ const request = require('supertest');
 
 const { app } = require('../app');
 const { User } = require('../models/user');
-const { users, populateUsers } = require('./seeds/userSeeds');
+const { users, populateUsers, client } = require('./seeds/userSeeds');
 
 beforeEach(populateUsers);
+afterAll(() => client.quit());
 
 describe('Like', () => {
   describe('GET /users/:user_id/likes', () => {
@@ -14,7 +15,7 @@ describe('Like', () => {
         .get(`/users/${users[0]._id}/likes`)
         .expect(200)
         .expect(res => {
-          expect(res.body.movies[0]).toBe(users[0]._likes[0]);
+          expect(res.body.movies[0].movie_id).toBe(users[0]._likes[0]);
         })
         .end(done);
     });

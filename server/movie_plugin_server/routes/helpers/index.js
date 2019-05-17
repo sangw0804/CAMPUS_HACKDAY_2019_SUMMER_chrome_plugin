@@ -24,6 +24,9 @@ const movieApiReq = async q => {
   return data;
 }
 
+const trimMovie = movie => Object.entries(movie).reduce((prev, curr) => prev.concat(curr), []);
+
+
 const testApiData = {items: [
   { title: '<b>괴물</b>',
   link: 'https://movie.naver.com/movie/bi/mi/basic.nhn?code=27260',
@@ -51,4 +54,4 @@ const testApiData = {items: [
   userRating: '8.88' }
 ]}
 
-module.exports = { findOptimalMovie, testApiData, movieApiReq };
+module.exports = { findOptimalMovie, testApiData, movieApiReq, trimMovie };
