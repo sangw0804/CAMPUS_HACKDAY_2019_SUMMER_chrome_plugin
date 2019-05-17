@@ -6,6 +6,7 @@ const { promisify } = require('util');
 const { trimMovie } = require('../../routes/helpers');
 
 const hmsetAsync = promisify(client.hmset).bind(client);
+const selectAsync = promisify(client.select).bind(client);
 
 // User
 const users = [

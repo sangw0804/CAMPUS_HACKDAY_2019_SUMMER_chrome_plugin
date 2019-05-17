@@ -1,9 +1,12 @@
 const expect = require('expect');
 const request = require('supertest');
+const { promisify } = require('util');
 
 const { app } = require('../app');
 const { User } = require('../models/user');
 const { users, populateUsers, client } = require('./seeds/userSeeds');
+
+const hgetallAsync = promisify(client.hgetall).bind(client);
 
 beforeEach(populateUsers);
 afterAll(() => client.quit());
@@ -20,7 +23,18 @@ describe('Movie', () => {
         .expect(res => {
           expect(res.body).toHaveProperty('title');
         })
-        .end(done);
+        .end(async (err, res) => {
+          try {
+            if (err) throw new Error(err);
+
+            const cachedMovie = await hgetallAsync(res.body.movie_id);
+            expect(cachedMovie).toBeTruthy();
+
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
     });
 
     it('should return movie data and add to history of user', done => {
