@@ -10,6 +10,8 @@ const client = require('./helpers/redisClient')();
 const { promisify } = require('util');
 
 const hmsetAsync = promisify(client.hmset).bind(client);
+const getAsync = promisify(client.hgetall).bind(client);
+const existAsync = promisify(client.exists).bind(client);
 
 router.post('/', async (req, res) => {
   try {
@@ -31,8 +33,9 @@ router.post('/', async (req, res) => {
       if (!foundUser) throw new Error('해당 token에 맞는 유저가 존재하지 않습니다!');
 
       await foundUser.addHistory(movie.movie_id);
-      if (client.exists(movie.movie_id) === 0) {
-        await hmsetAsync(movie.movie_id, trimMovie(movie));
+      console.log(movie.movie_id);
+      if (!await existAsync(movie.movie_id)) {
+        await hmsetAsync(movie.movie_id, movie);
       }
     }
 

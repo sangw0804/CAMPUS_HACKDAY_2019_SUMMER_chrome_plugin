@@ -23,18 +23,7 @@ describe('Movie', () => {
         .expect(res => {
           expect(res.body).toHaveProperty('title');
         })
-        .end(async (err, res) => {
-          try {
-            if (err) throw new Error(err);
-
-            const cachedMovie = await hgetallAsync(res.body.movie_id);
-            expect(cachedMovie).toBeTruthy();
-
-            done();
-          } catch (e) {
-            done(e);
-          }
-        });
+        .end(done);
     });
 
     it('should return movie data and add to history of user', done => {
@@ -53,6 +42,9 @@ describe('Movie', () => {
 
             const foundUser = await User.findById(body.token);
             expect(foundUser._histories[0].movie_id).toBe(res.body.movie_id);
+
+            const cachedMovie = await hgetallAsync(res.body.movie_id);
+            expect(cachedMovie).toBeTruthy();
 
             done();
           } catch (e) {
