@@ -1,14 +1,8 @@
 const express = require('express');
-const axios = require('axios');
-const redis = require("redis");
 
-const config = require('../config');
 const router = express.Router({ mergeParams: true });
 const { User } = require('../models/user');
 const client = require('./helpers/redisClient')();
-const { promisify } = require('util');
-
-const hgetallAsync = promisify(client.hgetall).bind(client);
 
 router.get('/', async (req, res) => {
   try {
@@ -17,7 +11,7 @@ router.get('/', async (req, res) => {
     const foundUser = await User.findById(user_id);
     if (!foundUser) throw new Error('user not found!');
 
-    const promises = foundUser._likes.map(l => hgetallAsync(l));
+    const promises = foundUser._likes.map(l => client.hgetallAsync(l));
     const movies = await Promise.all(promises);
 
     res.status(200).send({ movies });

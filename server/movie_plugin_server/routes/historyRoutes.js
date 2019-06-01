@@ -1,14 +1,8 @@
 const express = require('express');
-const axios = require('axios');
 
-const config = require('../config');
 const router = express.Router({ mergeParams: true });
 const { User } = require('../models/user');
-const { movieApiReq } = require('./helpers');
 const client = require('./helpers/redisClient')();
-const { promisify } = require('util');
-
-const hgetallAsync = promisify(client.hgetall).bind(client);
 
 router.get('/', async (req, res) => {
   try {
@@ -18,7 +12,7 @@ router.get('/', async (req, res) => {
     if (!foundUser) throw new Error('user not found!');
 
     const promises = foundUser._histories.map(async h => {
-      let tempHistory = await hgetallAsync(h.movie_id);
+      let tempHistory = await client.hgetallAsync(h.movie_id);
       return {...tempHistory, created_at: h.created_at};
     });
     const histories = await Promise.all(promises);

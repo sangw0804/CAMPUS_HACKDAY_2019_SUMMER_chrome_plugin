@@ -1,17 +1,9 @@
 const express = require('express');
-const axios = require('axios');
-const redis = require("redis");
 
-const config = require('../config');
 const router = express.Router();
 const { User } = require('../models/user');
 const { findOptimalMovie, testApiData, movieApiReq, trimMovie } = require('./helpers');
 const client = require('./helpers/redisClient')();
-const { promisify } = require('util');
-
-const hmsetAsync = promisify(client.hmset).bind(client);
-const getAsync = promisify(client.hgetall).bind(client);
-const existAsync = promisify(client.exists).bind(client);
 
 router.post('/', async (req, res) => {
   try {
@@ -34,8 +26,8 @@ router.post('/', async (req, res) => {
 
       await foundUser.addHistory(movie.movie_id);
       console.log(movie.movie_id);
-      if (!await existAsync(movie.movie_id)) {
-        await hmsetAsync(movie.movie_id, movie);
+      if (!await client.existAsync(movie.movie_id)) {
+        await client.hmsetAsync(movie.movie_id, movie);
       }
     }
 

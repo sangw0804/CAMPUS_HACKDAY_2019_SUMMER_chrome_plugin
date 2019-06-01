@@ -2,11 +2,7 @@ const { User } = require('../../models/user');
 const { ObjectID } = require('mongodb');
 const redis = require("redis");
 const client = require('../../routes/helpers/redisClient')();;
-const { promisify } = require('util');
 const { trimMovie } = require('../../routes/helpers');
-
-const hmsetAsync = promisify(client.hmset).bind(client);
-const selectAsync = promisify(client.select).bind(client);
 
 // User
 const users = [
@@ -48,8 +44,8 @@ const populateUsers = async done => {
     await User.deleteMany({});
     await User.insertMany(users);
 
-    await hmsetAsync(users[0]._likes[0], trimMovie(movies[0]));
-    await hmsetAsync(users[0]._histories[0].movie_id, trimMovie(movies[1]));
+    await client.hmsetAsync(users[0]._likes[0], trimMovie(movies[0]));
+    await client.hmsetAsync(users[0]._histories[0].movie_id, trimMovie(movies[1]));
 
     done();
   } catch (e) {

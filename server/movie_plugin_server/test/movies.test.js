@@ -1,15 +1,12 @@
 const expect = require('expect');
 const request = require('supertest');
-const { promisify } = require('util');
 
 const { app } = require('../app');
 const { User } = require('../models/user');
 const { users, populateUsers, client } = require('./seeds/userSeeds');
 
-const hgetallAsync = promisify(client.hgetall).bind(client);
-
 beforeEach(populateUsers);
-afterAll(() => client.quit());
+afterAll(() => client.instance.quit());
 
 describe('Movie', () => {
   describe('post /movies', () => {
@@ -43,7 +40,7 @@ describe('Movie', () => {
             const foundUser = await User.findById(body.token);
             expect(foundUser._histories[0].movie_id).toBe(res.body.movie_id);
 
-            const cachedMovie = await hgetallAsync(res.body.movie_id);
+            const cachedMovie = await client.hgetallAsync(res.body.movie_id);
             expect(cachedMovie).toBeTruthy();
 
             done();
